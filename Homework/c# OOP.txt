@@ -1,0 +1,168 @@
+using System;
+
+
+public class Game
+{
+
+
+    public static void Main(string[] args)
+    {
+        Game game = new Game();
+        Fighter fighter1 = new Fighter();
+       
+        Wizard wiz1 = new Wizard();
+
+        game.fight(fighter1, wiz1);
+    }
+
+    public void fight(Player Play1, Player Play2)
+    {
+        while (Play1.getHP()>0 && Play2.getHP() > 0)
+        {
+            //Fighter class get random damage
+            // the fighter have a chance to do a special attack
+            
+            if (Play1.specialChance())
+            {
+                Play1.specialAttack();
+                Console.WriteLine("Fighter have used special attack");
+
+            }
+
+            else
+            {
+                Play1.randomDamage(10, 21);
+            }
+            // set the hnp of the wizard after the fighter attack 
+            Play2.setHP(Play2.getHP() - Play1.getATK());
+
+            Console.WriteLine(" the fighter dealt " + Play1.getATK() + " damage to the wizard");
+
+            //Check Wizard Hp if 0 then wizard lose
+
+            if (Play2.getHP() <= 0)
+            {
+                Console.WriteLine("Fighter won");
+                break;
+            }
+
+            //Wizard class get random damage
+            // Wizard hvae a chance to do a special attack
+            if (Play2.specialChance())
+            {
+                Play2.specialAttack();
+                Console.WriteLine("Wizard have used special attack");
+            }
+            else
+            {
+                Play2.randomDamage(5, 16);
+            }
+
+            
+            // set the hp of the fighter  after the wizard attack
+            Play1.setHP(Play1.getHP() - Play2.getATK());
+
+            Console.WriteLine("the wizard dellt "+ Play2.getATK() + " damage to the fighter");
+            // check whether the wizard has won or not 
+            if(Play1.getHP() <= 0)
+            {
+                Console.WriteLine("Wizard won");
+                break;
+            }
+
+
+        }
+    }
+}
+// the player attack and hp can be use for different class with the player
+public abstract class Player
+{
+    // the values that can be used across multiple classes
+    private int HP;
+    private int ATK;
+
+    Random rnd = new Random();
+    // create the chances of the special attack to occur
+    public bool specialChance()
+    {
+        int chance = rnd.Next(1, 6);
+
+        if (chance == 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    // default consturctor for filling code to test 
+    public Player()
+    {
+        HP = 100;
+        ATK = 5;
+    }
+
+    // return Hp
+    public int getHP()
+    {
+        return HP;
+    }
+
+    //old and new value of hp
+    public void setHP(int new_HP)
+    {
+        HP = new_HP;
+    }
+
+    // return atk
+    public int getATK()
+    {
+        return ATK;
+    }
+
+    //old and new value of atk
+    public void setATK(int new_ATK)
+    {
+        ATK = new_ATK;
+    }
+
+    //Give atk a random damage value
+    public void randomDamage(int min_DMG, int max_DMG)
+    {
+        ATK = rnd.Next(min_DMG, max_DMG);
+    }
+
+    //the abstract part of the class and overriden by anything following it 
+    public abstract void specialAttack();
+}
+
+// the fighter class that extend player
+public class Fighter : Player
+{
+    public Fighter()
+    {
+        setATK(20);
+    }
+    
+    
+    public override void specialAttack()
+    {
+        setATK(40);
+
+    }
+}
+
+// The Wizard class that extent player
+public class Wizard : Player
+{
+    
+    public Wizard()
+    {
+        setATK(15);
+    }
+
+    public override void specialAttack()
+    {
+        setATK(30);
+        
+    }
+}
