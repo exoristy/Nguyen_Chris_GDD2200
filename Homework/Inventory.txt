@@ -1,0 +1,61 @@
+// Online C# compiler (editor) for free
+// Write and run C# online using this editor.
+
+using System;
+using System.Collections.Generic;
+
+public class HelloWorld {
+    public static void Main(string[] args) {
+        //Create a list to store items
+        List<Item> Inventory = new List<Item>();
+
+        //Create a potion and add it to the inventory
+        Potion potion = new Potion();
+        Inventory.Add(potion);
+
+        
+        // Create another potion to add to inventory
+        Potion newItem = new Potion();
+
+        //Check if the item "potion" already exists
+        bool found = false;
+
+        //Check every item in the inventory
+        foreach (Item items in Inventory){
+            //Compare the items id to see if they are the same item
+            if (items.itemID == newItem.itemID){
+                //Add the quantity if the item already exists
+                items.amount = items.amount + 1;
+
+                //Mark the item as found
+                found = true;
+
+
+                
+            }
+        }
+        //Add the item if it was not found in the inventory
+        if (!found){
+            Inventory.Add(newItem);
+            
+        }
+        // display the items and their amount 
+        foreach (Item items in Inventory){
+            Console.WriteLine(items.name +"Quantity: " + items.amount);
+        }
+    }
+}
+// Abstract class for all items in the inventory
+public abstract class Item{
+    public string name;
+    public int itemID;
+    public int amount;
+}
+//Potion inherits from the Item class
+public class Potion : Item{
+    public Potion(){
+        name = "Potion";
+        amount = 1;
+        itemID = 1;
+    }
+}
